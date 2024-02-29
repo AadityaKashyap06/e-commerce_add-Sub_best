@@ -1,0 +1,246 @@
+//Ecommerce website ist page:-
+code 1:-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        select{
+            margin-bottom: 20px;;
+        }
+        .nav {
+        background-color: #333;
+        color: #fff;
+        padding: 10px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+    .nav h1 {
+        margin: 0;
+        font-size: 24px;
+    }
+    .nav a {
+        text-decoration: none;
+        color: #fff;
+        padding: 10px;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+    .nav a:hover {
+        background-color: #555;
+    }
+          .prod{
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+            gap:20px;
+            
+          }
+          .prod>div{
+            width:300px;
+            border:1px solid red;
+            background-color: teal;
+            text-align: center;
+            box-shadow: rgba(240, 46, 170, 0.4) 5px 5px, rgba(240, 46, 170, 0.3) 10px 10px, rgba(240, 46, 170, 0.2) 15px 15px, rgba(240, 46, 170, 0.1) 20px 20px, rgba(240, 46, 170, 0.05) 25px 25px;
+          }
+          img{
+            width:200px;
+          }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <h1>Masai Ecommerce</h1>
+        <a href="./cart11.html"> &#128722; Cart</a> <!-- Cart emoji added here -->
+        <!-- <a href="./cart11.html" ul="0" style="font-size: 30px;">Cart</a> -->
+    </div>
+        <select name="aaa" id="ss">
+            <option value="">Filter By Category</option>
+            <option value="women's clothing">women's clothing</option>
+            <option value="electronics">electronics</option>
+            <option value="jewelery">jewelery</option>
+        </select>
+        <div class="prod">
+
+        </div>
+</body>
+</html>
+<script>
+     let ls_data=localStorage.getItem("pp2");
+     if(ls_data==null){
+    ls_data=[]
+     }else{
+        ls_data=JSON.parse(ls_data)
+     }
+    let par=document.querySelector(".prod")
+    let data;
+    let api=`https://fakestoreapi.com/products`;
+      async function data1(){
+        try {
+           let res=await fetch(api);
+         let kk=await res.json();
+         display(kk);
+         data=kk;
+           
+        } catch (error) {
+            console.log(error);  
+        }
+      }  
+      data1();
+          let sel=document.getElementById("ss");
+          sel.addEventListener("change",()=>{
+            par.innerHTML=null;
+          if(sel.value==""){
+            display(data);
+          }else{
+            let mm=data.filter((a,b)=>{
+               if(a.category===sel.value){
+                return true;
+               }else{
+                return false;
+               }
+            })
+            display(mm)
+          }
+          })
+      function display(arr){
+         arr.forEach(e => {
+          let card=document.createElement("div");
+          let img=document.createElement("img");
+          img.setAttribute("src",e.image)
+          let name=document.createElement("h2");
+          name.innerText=e.title;
+          let cat=document.createElement("h2");
+          cat.innerText=e.category;
+          let des=document.createElement("h3");
+          des.innerText=e.description;
+          let price=document.createElement("h3");
+          price.innerText="price:- Rs"+e.price;
+          let cart=document.createElement("button");
+          cart.innerText="Add to cart";
+          cart.addEventListener("click",()=>{
+                if(!(ls_data.some(x=>x.title==e.title))){
+                 e["quantity"]=1;
+                    ls_data.push(e);
+                    localStorage.setItem("pp2",JSON.stringify(ls_data));
+                    confirm(`added to cart??`)
+                }else{
+                    alert(`item added alrady!`)
+                }
+          })
+          card.append(img,name,price,cat,des,cart);
+          par.append(card);
+         });
+      }
+   
+</script>
+   ///// cart page code 2:-
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        img{
+            width: 200px;
+            height:300px
+        }
+        .prod{
+          display:grid;
+          grid-template-columns: repeat(3,1fr);
+          gap:20px;
+        }
+        .prod>div{
+            background-color: teal;
+            text-align:center;
+            border:1px solid green;
+            width:300px;
+            
+        }
+        button{
+            margin:2px;     
+        }
+    </style>
+</head>
+<body>
+        <h1 id="uu">Your Total Price is :- </h1>
+    <a href="./aad2.html">Back</a>
+    <div class="prod">
+
+    </div>     
+</body>
+</html>
+<script>
+    let count=1;
+    let par=document.querySelector(".prod")
+    let ls_data=localStorage.getItem("pp2");
+     if(ls_data==null){
+    ls_data=[]
+     }else{
+        ls_data=JSON.parse(ls_data)
+     }
+    display(ls_data);
+    function display(arr){
+        par.innerHTML=null;
+         arr.forEach((e,y) => {
+          let card=document.createElement("div");
+          let img=document.createElement("img");
+          img.setAttribute("src",e.image)
+          let name=document.createElement("h2");
+          name.innerText=e.title;
+          let cat=document.createElement("h2");
+          cat.innerText=e.category;
+          let des=document.createElement("h3");
+          des.innerText=e.description;
+          let price=document.createElement("h3");
+          price.innerText=e.price;
+          let q=document.createElement("h2");
+          q.innerText="Quantity- " + e.quantity;
+          let cart=document.createElement("button");
+             cart.innerText="+";
+             cart.addEventListener("click",()=>{
+              if(e.quantity<5){
+                e.quantity+=1;
+                 localStorage.setItem("pp2",JSON.stringify(arr));
+                 display(arr)
+              }else if(e.quantity===5){
+                alert(`You can't buy more than 5 same items!!`)
+              }
+             })
+          let cart1=document.createElement("button");
+             cart1.innerText="-";
+             cart1.addEventListener("click",()=>{
+               if(e.quantity>1){
+                e.quantity--;
+                 localStorage.setItem("pp2",JSON.stringify(arr));
+                 display(arr)
+               }
+             })
+          let cart2=document.createElement("button");
+             cart2.innerText="delete";
+                cart2.addEventListener("click",()=>{
+                    arr=arr.filter((a,b)=>{
+                       if(b==y){
+                        return false;
+                       }else{
+                        return true;
+                       }
+                    })
+                display(arr);
+                localStorage.setItem("pp2",JSON.stringify(arr))
+                })
+           let total=document.getElementById("uu");
+           let sum=0;
+           for(let i=0;i<arr.length;i++){
+            sum+=arr[i].quantity*(arr[i].price);
+           }
+           total.innerText=`Total Price:- ${sum}`;
+          card.append(img,name,price,cat,des,q,cart,cart1,cart2);
+   par.append(card);
+         });
+      }
+</script>

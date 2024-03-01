@@ -57,6 +57,7 @@ code 1:-
         <a href="./cart11.html"> &#128722; Cart</a> <!-- Cart emoji added here -->
         <!-- <a href="./cart11.html" ul="0" style="font-size: 30px;">Cart</a> -->
     </div>
+            <input type="text" id="ee" placeholder="write your choice here">
         <select name="aaa" id="ss">
             <option value="">Filter By Category</option>
             <option value="women's clothing">women's clothing</option>
@@ -90,6 +91,18 @@ code 1:-
         }
       }  
       data1();
+   let ll=document.getElementById("ee");
+      ll.addEventListener("input",()=>{
+        par.innerHTML=null
+        let yy=data.filter((a,b)=>{
+            if(a.title.toUpperCase().includes(ll.value.toUpperCase())){
+                return true
+            }else{
+                return false;
+            }
+        })
+        display(yy);
+      })
           let sel=document.getElementById("ss");
           sel.addEventListener("change",()=>{
             par.innerHTML=null;
